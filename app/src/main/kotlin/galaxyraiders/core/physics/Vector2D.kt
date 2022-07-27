@@ -3,11 +3,14 @@ package galaxyraiders.core.physics
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import kotlin.math.PI
-import kotlin.math.sqrt
 import kotlin.math.atan2
+import kotlin.math.sqrt
 
 @JsonIgnoreProperties("unit", "normal", "degree", "magnitude")
 data class Vector2D(val dx: Double, val dy: Double) {
+
+  val halfCircle: Double = 180.0
+
   override fun toString(): String {
     return "Vector2D(dx=$dx, dy=$dy)"
   }
@@ -19,7 +22,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
     get() = atan2(dy, dx)
 
   val degree: Double
-    get() = 180 * radiant / PI
+    get() = halfCircle * radiant / PI
 
   val unit: Vector2D
     get() = this / magnitude
@@ -60,7 +63,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
   }
 
   fun vectorProject(target: Vector2D): Vector2D {
-	return scalarProject(target) * target.unit
+    return scalarProject(target) * target.unit
   }
 }
 
