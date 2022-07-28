@@ -9,7 +9,7 @@ import kotlin.math.sqrt
 @JsonIgnoreProperties("unit", "normal", "degree", "magnitude")
 data class Vector2D(val dx: Double, val dy: Double) {
 
-  val halfCircle: Double = 180.0
+  const val halfCircle: Double = 180.0
 
   override fun toString(): String {
     return "Vector2D(dx=$dx, dy=$dy)"

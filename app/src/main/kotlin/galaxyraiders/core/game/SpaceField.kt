@@ -23,6 +23,10 @@ object SpaceFieldConfig {
   val asteroidMinMass = config.get<Int>("ASTEROID_MIN_MASS")
   val asteroidMaxMass = config.get<Int>("ASTEROID_MAX_MASS")
   val asteroidMassMultiplier = config.get<Double>("ASTEROID_MASS_MULTIPLIER")
+
+  const val explosionLifeTimeLimit = 24
+  const val explosionRadius = 4.0
+  const val explosionMass = 0.0
 }
 
 @Suppress("TooManyFunctions")
@@ -85,9 +89,8 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
       explosion.lifeTime += 1
     }
 
-    val lifeTimeLimit: Int = 24
     this.explosions = this.explosions.filter {
-      it.lifeTime < lifeTimeLimit
+      it.lifeTime < SpaceFieldConfig.explosionLifeTimeLimit
     }
   }
 
@@ -174,7 +177,9 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
 
   private fun createExplosion(position: Point2D): Explosion {
     return Explosion(
-      initialPosition = position
+      initialPosition = position,
+      radius = SpaceFieldConfig.explosionRadius,
+      mass = SpaceFieldConfig.explosionMass,
     )
   }
 }
