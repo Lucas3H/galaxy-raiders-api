@@ -6,11 +6,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
+const val HALF_CIRCLE: Double = 180.0
 @JsonIgnoreProperties("unit", "normal", "degree", "magnitude")
 data class Vector2D(val dx: Double, val dy: Double) {
-
-  const val halfCircle: Double = 180.0
-
   override fun toString(): String {
     return "Vector2D(dx=$dx, dy=$dy)"
   }
@@ -22,7 +20,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
     get() = atan2(dy, dx)
 
   val degree: Double
-    get() = halfCircle * radiant / PI
+    get() = HALF_CIRCLE * radiant / PI
 
   val unit: Vector2D
     get() = this / magnitude
