@@ -81,6 +81,15 @@ class SpaceFieldTest {
   }
 
   @Test
+  fun `it starts with no explosions`() {
+    assertAll(
+      "SpaceField should initialize an empty list of explosions",
+      { assertNotNull(spaceField.explosions) },
+      { assertEquals(0, spaceField.explosions.size) },
+    )
+  }
+
+  @Test
   fun `it has a list of objects with ship, missiles and asteroids`() {
     val ship = spaceField.ship
 
@@ -375,6 +384,25 @@ class SpaceFieldTest {
     spaceField.trimAsteroids()
 
     assertNotEquals(-1, spaceField.asteroids.indexOf(asteroid))
+  }
+
+  @Test
+  fun `it does remove explosions older than the lifeTime`() {
+    spaceField.generateExplosions(Point2D(40.0, 40.0))
+
+    repeat(24) {
+      spaceField.trimExplosions()
+    }
+
+    assertEquals(0, spaceField.explosions.size)
+  }
+
+  @Test
+  fun `it can generate a new explosion`() {
+    val numExplosions = spaceField.explosions.size
+    spaceField.generateExplosions(Point2D(40.0, 40.0))
+
+    assertEquals(numExplosions + 1, spaceField.explosions.size)
   }
 
   private companion object {

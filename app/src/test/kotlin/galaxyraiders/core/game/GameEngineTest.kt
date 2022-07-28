@@ -1,5 +1,6 @@
 package galaxyraiders.core.game
 
+import galaxyraiders.core.physics.Point2D
 import galaxyraiders.helpers.AverageValueGeneratorStub
 import galaxyraiders.helpers.ControllerSpy
 import galaxyraiders.helpers.MaxValueGeneratorStub
@@ -154,6 +155,7 @@ class GameEngineTest {
   fun `it can trim its space objects`() {
     hardGame.field.generateAsteroid()
     hardGame.field.generateMissile()
+    hardGame.field.generateExplosions(Point2D(40.0, 40.0))
 
     val missile = hardGame.field.missiles.last()
     val missileDistanceToTopBorder =
@@ -169,6 +171,9 @@ class GameEngineTest {
       asteroidDistanceToBottomBorder / Math.abs(asteroid.velocity.dy)
     ).toInt()
 
+    val explosion = hardGame.field.explosions.last()
+    val repetitionsToEndExplosion = 24
+
     val repetitionsToGetSpaceObjectsOutOfSpaceField = Math.max(
       repetitionsToGetMissileOutOfSpaceField,
       repetitionsToGetAsteroidOutsideOfSpaceField,
@@ -178,12 +183,17 @@ class GameEngineTest {
       hardGame.moveSpaceObjects()
     }
 
+    repeat(repetitionsToEndExplosion) {
+      hardGame.field.trimExplosions()
+    }
+
     hardGame.trimSpaceObjects()
 
     assertAll(
       "GameEngine should trim all space objects",
       { assertEquals(-1, hardGame.field.missiles.indexOf(missile)) },
       { assertEquals(-1, hardGame.field.asteroids.indexOf(asteroid)) },
+      { assertEquals(-1, hardGame.field.explosions.indexOf(explosion)) },
     )
   }
 
